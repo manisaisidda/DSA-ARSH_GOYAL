@@ -1,0 +1,66 @@
+class Solution {
+    public static long[] productExceptSelf(int arr[]) {
+        // code here
+        long pre[]=new long[arr.length];
+        long suf[]=new long[arr.length];
+        pre[0]=1;
+        long curr=1;
+        suf[arr.length-1]=1;
+        
+        for(int i=1;i<arr.length;i++)
+        {
+            pre[i]=curr*arr[i-1];
+            curr=pre[i];
+        }
+        curr=1;
+        for(int i=arr.length-2;i>=0;i--)
+        {
+            suf[i]=curr*arr[i+1];
+            curr=suf[i];
+        }
+        
+        long ans[]=new long[arr.length];
+        
+        for(int i=0;i<arr.length;i++)
+        {
+            ans[i]=pre[i]*suf[i];
+        }
+        return ans;
+    }
+}
+
+Optimal Approach:
+class Solution {
+    public static long[] productExceptSelf(int nums[]) {
+        // code here
+        int n = nums.length;
+        long prod = 1;
+        
+        long res[] = new long[n];
+        
+        int flag = 0;
+
+        // product of all elements
+        for (int i = 0; i < n; i++) {
+            res[i] = nums[i];
+            // counting number of elements which have value 0
+            if (res[i] == 0)
+                flag++;
+            else
+                prod *= res[i];
+        }
+
+        for (int i = 0; i < n; i++) {
+            if (flag > 1) {
+                res[i] = 0;
+            } else if (flag == 0) {
+                res[i] = prod / res[i];
+            } else if (flag == 1 && res[i] != 0) {
+                res[i] = 0;
+            } else {
+                res[i] = prod;
+            }
+        }
+        return res;
+    }
+}
